@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="inverted_pendulum">
+    <link name="base_link"/>
+    <joint name="base_link_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="linear_rail"/>
+    </joint>
+    <link name="world"/>
+    <joint name="fixed" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
+    </joint>
+    <!-- Linear rail -->
+    <link name="linear_rail">
+        <static>true</static>
+        <inertial>
+            <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+            <mass value="0.405"/>
+            <inertia ixx="8.502e-3" ixy="0.0" ixz="0.0" iyy="8.163e-5" iyz="0.0" izz="8.454e-3"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Linear_Rail.dae"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0.0" xyz="0.0 0 1"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Linear_Rail.dae"/>
+            </geometry>
+    </collision>
+    </link>
+    <!-- Gantry Assembly -->
+    <link name="gantry_assembly">
+        <inertial>
+            <origin xyz="0.0 0.0 0.046" rpy="0.0 0.0 1.5708"/>
+            <mass value="0.077"/>
+            <inertia ixx="1.103e-5" ixy="0.0" ixz="0.0" iyy="1.009e-5" iyz="0.0" izz="2.108e-5"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="0.0 0.0 0.046" rpy="0.0 0.0 1.5708"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Gantry_Assembly.dae"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.046" rpy="0.0 0.0 1.5708"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Gantry_Assembly.dae"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="moving_gantry" type="prismatic">
+        <parent link="linear_rail"/>
+        <child link="gantry_assembly"/>
+        <origin xyz="0.0 0.0 1.023"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="12.5106" lower="-0.220" upper="0.220" velocity="1000"/>
+        <dynamics damping="0.01" friction="0.1"/>
+    </joint>
+    <!-- Pendulum -->
+    <link name="pendulum">
+        <inertial>
+            <origin xyz="0.010 0.0 0.215" rpy="3.14159 0.0 3.14159"/>
+            <mass value="0.150"/>
+            <inertia ixx="2.00111160e-3" ixy="0.0" ixz="0.0" iyy="2.00111160e-3" iyz="0.00000000e+0" izz="1.14105861e-6"/>
+        </inertial>
+        <visual name="">
+            <origin xyz="0.010 0.0 0.215" rpy="3.14159 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Pendulum_Rod.dae"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.010 0.0 0.215" rpy="3.14159 0.0 3.14159"/>
+            <geometry>
+                <mesh filename="package://inverted_pendulum_description/meshes/Pendulum_Rod.dae"/>
+            </geometry>
+        </collision>
+    </link>
+    <joint name="pendulum_gantry" type="continuous">
+        <parent link="gantry_assembly"/>
+        <child link="pendulum"/>
+        <origin xyz="0.036 0.0 0.062" rpy="0.0 0.0 0.0"/>
+        <axis xyz="1 0 0"/>
+        <dynamics damping="1E-6" friction="1E-3"/>
+    </joint>
+</robot>
