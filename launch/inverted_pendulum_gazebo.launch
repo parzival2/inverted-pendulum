@@ -15,6 +15,10 @@
     </include>
     <!-- Set robot description -->
     <param name="robot_description" command="cat '$(find inverted_pendulum_description)/urdf/inverted_pendulum.urdf'"/>
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+    </node> 
+    <!-- start robot state publisher --> 
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
     <!-- Spawn My Robot -->
     <!-- node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
         args="-file $(find autocar_description)/urdf/autocar.urdf -urdf -model autocar
